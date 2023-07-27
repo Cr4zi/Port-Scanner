@@ -79,8 +79,6 @@ fn port_scan(addr: String) -> Vec<u16> {
                     let mut open_ports = opens_clone.lock().unwrap();
                     open_ports.push(cur_port);
                 }
-                
-                
             }
 
         });
