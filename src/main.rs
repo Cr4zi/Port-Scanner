@@ -1,4 +1,5 @@
 use std::env;
+use std::collections::HashMap;
 use std::str::FromStr;
 use std::sync::{Arc, Mutex};
 use std::thread;
@@ -8,7 +9,7 @@ use std::net::TcpStream;
 use std::net::{IpAddr, Ipv4Addr, SocketAddr};
 
 const THREADS_COUNT: usize = 50;
-const MAX_PORT: u16 = 65535;
+const MAX_PORT: u16 = 500;
 
 macro_rules! info {
     ($msg:expr $(, $($arg:expr),*)?) => {
@@ -30,6 +31,8 @@ fn main() {
     }
 
     let addr: String = (&args[1]).to_string();
+    let addr_c= addr.clone();
+
     let addr_clone = addr.clone();
     let open_ports = port_scan(addr);
 
@@ -37,7 +40,11 @@ fn main() {
         print!("-");
     }
 
+    let ip: &str = &format!("{}:{}", addr_c, open_ports[0]);
+    let os = get_os(ip);
+
     print!("\n");
+    okay!("Operating System: {}", os);
 
     for port in open_ports.iter() {
         okay!("{}:{} is open", addr_clone, port);
@@ -115,4 +122,16 @@ fn scan(addr: Ipv4Addr, port: u16) -> bool {
             false
         }
     }
+}
+
+fn get_os(addr: &str) -> &str {
+    let ttl_footprints: HashMap<u32, &str> = HashMap::from([
+        (64, "Unix (Linux/FreeBSD/Mac OS X)"),
+        (255, "Solaris"),
+        (128, "Windows")
+    ]);
+
+    let ttl = TcpStream::connect(addr).expect("Couldn't connect to IP").ttl().unwrap();
+
+    ttl_footprints[&ttl]
 }
