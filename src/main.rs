@@ -9,7 +9,7 @@ use std::net::TcpStream;
 use std::net::{IpAddr, Ipv4Addr, SocketAddr};
 
 const THREADS_COUNT: usize = 50;
-const MAX_PORT: u16 = 500;
+const MAX_PORT: u16 = 65535;
 
 macro_rules! info {
     ($msg:expr $(, $($arg:expr),*)?) => {
