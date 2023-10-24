@@ -2,7 +2,7 @@
 A simple port scanner made with rust
 
 * Make sure you have cargo before running this project!
-[Cargo installtion guide](https://doc.rust-lang.org/cargo/getting-started/installation.html)
+[Cargo installation guide](https://doc.rust-lang.org/cargo/getting-started/installation.html)
 
 ### Download
 ```
